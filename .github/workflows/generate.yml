@@ -2,9 +2,7 @@
 
 on:
   push:
-    branches: [main]
-    paths:
-      - 'protos/**'
+    branches: [master, main]
 
 jobs:
   generate:
