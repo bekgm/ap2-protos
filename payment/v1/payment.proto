@@ -4,11 +4,6 @@ package payment.v1;
 
 option go_package = "github.com/bekgm/ap2-generated/payment/v1;paymentv1";
 
-import "google/protobuf/timestamp.proto";
-
-service PaymentService {
-  rpc ProcessPayment(PaymentRequest) returns (PaymentResponse);
-}
 
 message PaymentRequest {
   string order_id = 1;
@@ -18,6 +13,19 @@ message PaymentRequest {
 message PaymentResponse {
   string                    transaction_id = 1;
   string                    status         = 2;
-  google.protobuf.Timestamp created_at     = 3;
+  string created_at = 3;
 }
 
+message ListPaymentsRequest {
+  int64 min_amount = 1; // 0 = unlimited
+  int64 max_amount = 2; // 0 = unlimited
+}
+
+message ListPaymentsResponse {
+  repeated PaymentResponse payments = 1;
+}
+
+service PaymentService {
+  rpc ProcessPayment(PaymentRequest)   returns (PaymentResponse);
+  rpc ListPayments(ListPaymentsRequest) returns (ListPaymentsResponse);
+}
